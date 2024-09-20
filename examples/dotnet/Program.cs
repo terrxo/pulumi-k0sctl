@@ -1,20 +1,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using Pulumi;
-using Xyz = Pulumi.Xyz;
+using K0s = Pulumi.K0s;
 
 return await Deployment.RunAsync(() => 
 {
-    var myRandomResource = new Xyz.Random("myRandomResource", new()
+    var myProvider = new K0s.Provider("myProvider", new()
     {
-        Length = 24,
+        NoDrain = "true",
+    });
+
+    var myCluster = new K0s.Cluster("myCluster", new()
+    {
+        Spec = new K0s.Inputs.ClusterSpecArgs
+        {
+            Hosts = new[]
+            {
+                new K0s.Inputs.ClusterHostArgs
+                {
+                    Role = "controller+worker",
+                    Localhost = new K0s.Inputs.ClusterLocalhostArgs
+                    {
+                        Enabled = true,
+                    },
+                },
+            },
+        },
+    }, new CustomResourceOptions
+    {
+        Provider = myProvider,
     });
 
     return new Dictionary<string, object?>
     {
         ["output"] = 
         {
-            { "value", myRandomResource.Result },
+            { "value", myCluster.Kubeconfig },
         },
     };
 });

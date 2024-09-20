@@ -1,16 +1,26 @@
-name: provider-xyz-native
+name: provider-k0s
 runtime: yaml
 plugins:
   providers:
-    - name: xyz
+    - name: k0s
       path: ../../bin
 
 resources:
-  myRandomResource:
-    type: xyz:Random
+  myProvider:
+    type: pulumi:providers:k0s
     properties:
-      length: 24
+      noDrain: true
+  myCluster:
+    type: k0s:Cluster
+    properties:
+      spec:
+        hosts:
+          - role: controller+worker
+            localhost:
+              enabled: true
+    options:
+      provider: ${myProvider}
 
 outputs:
   output:
-    value: ${myRandomResource.result}
+    value: ${myCluster.kubeconfig}

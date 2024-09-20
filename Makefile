@@ -1,10 +1,10 @@
-PROJECT_NAME := Pulumi Xyz Resource Provider
+PROJECT_NAME := Pulumi k0sctl Resource Provider
 
-PACK             := xyz
+PACK             := k0sctl
 PACKDIR          := sdk
-PROJECT          := github.com/pulumi/pulumi-xyz
-NODE_MODULE_NAME := @abc/xyz
-NUGET_PKG_NAME   := Abc.Xyz
+PROJECT          := github.com/terrxo/pulumi-k0sctl
+NODE_MODULE_NAME := @terrxo/k0sctl
+NUGET_PKG_NAME   := Terrx.K0sctl
 
 PROVIDER        := pulumi-resource-${PACK}
 VERSION         ?= $(shell pulumictl get version)
